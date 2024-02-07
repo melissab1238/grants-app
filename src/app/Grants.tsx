@@ -83,12 +83,13 @@ const GrantCard: React.FC<Grant> = ({
             ))}
         </ul>
         <button
-          className="mt-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={handleRefreshClick}
-        >
-          Refresh
-          {isLoading && <LoadingAnimation />}
-        </button>
+            className="mt-2 p-2 text-white streamline-green-background rounded hover:opacity-70"
+            onClick={handleRefreshClick}
+          >
+            Refresh
+            {isLoading && <LoadingAnimation />}
+          </button>
+        
         <p>{helpText}</p>
       </div>
     </div>

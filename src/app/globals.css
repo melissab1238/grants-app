@@ -7,6 +7,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --light-blue-color: #edf2f7;
+  --streamline-green: #317867;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,4 +40,8 @@ body {
 
 .light-blue-background-hover:hover {
   background-color: var(--light-blue-color);
+}
+
+.streamline-green-background {
+  background-color: var(--streamline-green);
 }

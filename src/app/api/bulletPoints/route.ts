@@ -39,7 +39,6 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     
     const grantObject: GrantObject = transformGrantTextToObject(result);
     const response = JSON.stringify(grantObject)
-    console.log("Result from OpenAI API json string:", result);
     return NextResponse.json(response, {status: 200});
 
   } catch (error) {
