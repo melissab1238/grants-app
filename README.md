@@ -1,4 +1,8 @@
 # Recreating Streamline's Discover tool
+live app
+https://grants-app-puce.vercel.app/
+
+streamline's actual discover tool
 https://app.streamlineclimate.com/discover 
 
 An old screenshot before I connected with openai. 
