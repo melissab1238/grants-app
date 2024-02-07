@@ -1,8 +1,8 @@
 # Recreating Streamline's Discover tool
-live app
+Live app
 https://grants-app-puce.vercel.app/
 
-streamline's actual discover tool
+Streamline's actual Discover tool
 https://app.streamlineclimate.com/discover 
 
 An old screenshot before I connected with openai. 
@@ -16,7 +16,7 @@ Of course, this query would not be triggered from a user as it is quite slow and
 
 ## Future features
 - pretty styling
-- tests 🫠
+- more tests
 - a new page for each card, showing who the grant is aimed at, the bullet points, as well as the current "about" and "project" text, as well as some links
 - sorting by sources
 - refactoring Grants.tsx - its too overwhelmed right now
@@ -40,7 +40,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
