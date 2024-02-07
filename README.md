@@ -15,8 +15,8 @@ When you click refresh (streamline's green), a request goes to the openai api to
 Of course, this query would not be triggered from a user as it is quite slow and is something that can be saved in a data pipeline.
 
 ## Future features
-If I had endless time...
 - pretty styling
+- tests 🫠
 - a new page for each card, showing who the grant is aimed at, the bullet points, as well as the current "about" and "project" text, as well as some links
 - sorting by sources
 - refactoring Grants.tsx - its too overwhelmed right now
