@@ -7,7 +7,6 @@ const openai = new OpenAI({
 
 
 export const POST = async (request: NextRequest): Promise<NextResponse> => {
-  console.log('in api function');
   
   if (!request.body) return NextResponse.json('No request body provided.')
   const reqBody = await request.json()
@@ -16,37 +15,32 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
   if (!description)
     return NextResponse.json('No pdf URL provided.')
 
-
   try {
-    // const completion = await openai.chat.completions.create({
-    //   messages: [
-    //     {
-    //       role: "system",
-    //       content:
-    //         "You will be provided with a block of text, and your task is to extract three concise sentences (think bullet points) from it",
-    //     },
-    //     {
-    //       role: "user",
-    //       content: description,
-    //     },
-    //   ],
-    //   model: "gpt-3.5-turbo",
-    //   max_tokens: 100,
-    //   temperature: 0.7,
-    // });
-    // const result = completion.choices[0].message?.content || "";
-    // if (result.length == 0) {
-    //   throw Error("No result from OpenAI API");
-    // }
-    // // Split the text into sentences based on periods
-    // const sentences = result.split(". ");
-    // // Add periods back to each sentence
-    // const sentencesWithPeriods = sentences.map(
-    //   (sentence: string) => sentence + "."
-    // );
-    // // return sentencesWithPeriods;
-    const stubResponse = ["Helena is great.", "Doug is great.", "Streamline is great."]
-    return NextResponse.json(JSON.stringify(stubResponse), {status: 200});
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content:
+            "You will be given a description of a grant's project specification. Your task is to return one sentence and three bullet points. The sentence should describe who the grant is targeting (maximum 15 words) and the bullet points should be very concise (no more than 7 words each). Do not use colons (:). Do not describe acronyms. Do not say `bullet points:`."
+        },
+        {
+          role: "user",
+          content: description,
+        },
+      ],
+      model: "gpt-3.5-turbo",
+      max_tokens: 80,
+      temperature: 0.7,
+    });
+    const result = completion.choices[0].message?.content || "";
+    if (result.length == 0) {
+      throw Error("No result from OpenAI API");
+    }
+    
+    const grantObject: GrantObject = transformGrantTextToObject(result);
+    const response = JSON.stringify(grantObject)
+    console.log("Result from OpenAI API json string:", result);
+    return NextResponse.json(response, {status: 200});
 
   } catch (error) {
     const errorMessage = "Error generating bullet points:"
@@ -54,3 +48,30 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     return NextResponse.json({ error: errorMessage}, { status: 500 })
   }
 };
+
+
+type GrantObject = {
+  targetAudience: string;
+  bulletPoints: string[];
+};
+
+const exampleGrantText = `
+This grant is targeting individuals and organizations working in the field of environmental conservation.
+
+- Funding available for projects focused on biodiversity conservation.
+- Priority given to initiatives that address climate change.
+- Grants available for both research and implementation.
+`;
+
+const transformGrantTextToObject = (text: string): GrantObject => {
+  const lines = text.split('\n').filter((line) => line.trim() !== '');
+
+  const targetAudience = lines[0].trim();
+  const bulletPoints = lines.slice(1).map((line) => line.replace(/^- /, '').replace(/\.$/, '').trim());
+
+  return {
+    targetAudience,
+    bulletPoints,
+  };
+};
+

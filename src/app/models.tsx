@@ -8,6 +8,7 @@ export type GrantTypes = "Loan" | "Incentive" | "Rebate";
 export interface Grant {
   name: string;
   type: GrantTypes;
+  targetAudience?: string;
   bulletPoints?: string[];
   description: string;
   id: number;
