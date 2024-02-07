@@ -113,7 +113,7 @@ const GrantCardList: React.FC<GrantsCardListProps> = ({ grants }) => {
     label: type,
   }));
 
-  const handleFilterChange = (selectedOptions: ValueType<CustomOption>)=> {
+  const handleFilterChange = (selectedOptions: any)=> {
     setSelectedTypes(selectedOptions);  
   };
 
