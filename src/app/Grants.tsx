@@ -1,28 +1,14 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Grant, GrantTypes, Source } from "./models";
-
+import React, { useCallback, useState } from "react";
+import { Grant, GrantTypes, getBoxColor } from "./models";
+import Select from "react-select";
 interface TypeBoxProps {
   type: GrantTypes;
 }
 
 const TypeBox: React.FC<TypeBoxProps> = ({ type }) => {
-  let boxColor = "";
-
-  switch (type) {
-    case "Loan":
-      boxColor = "bg-blue-100";
-      break;
-    case "Incentive":
-      boxColor = "bg-purple-100";
-      break;
-    case "Rebate":
-      boxColor = "bg-yellow-100";
-      break;
-    default:
-      boxColor = "bg-gray-200";
-  }
+  const boxColor = getBoxColor(type)
 
   return (
     <div
@@ -112,16 +98,46 @@ const GrantCard: React.FC<Grant> = ({
 interface GrantsCardListProps {
   grants: Grant[];
 }
-const GrantCardList = ({ grants }: GrantsCardListProps) => {
+interface CustomOption {
+  value: string;
+  label: string;
+}
+
+const GrantCardList: React.FC<GrantsCardListProps> = ({ grants }) => {
+  const [selectedTypes, setSelectedTypes] = useState<{ value: string; label: string }[]>([]);
+  const uniqueTypes: CustomOption[] = Array.from(
+    new Set(grants.map((grant) => grant.type))
+  ).map((type) => ({
+    value: type,
+    label: type,
+  }));
+
+  const handleFilterChange = (selectedOptions: ValueType<CustomOption>)=> {
+    setSelectedTypes(selectedOptions);  
+  };
+
+  // Filter grants based on selected types
+  const filteredGrants = selectedTypes.length
+  ? grants.filter((grant) =>
+      selectedTypes.some((selectedType) => selectedType.value === grant.type)
+    )
+  : grants;
+  
   return (
     <div>
-      {grants.map((grant, index) => (
+      <Select
+        isMulti
+        options={uniqueTypes}
+        value={selectedTypes}
+        onChange={handleFilterChange}
+        placeholder="Select types..."
+      />
+      {filteredGrants.map((grant: Grant) => (
         <GrantCard key={grant.id} {...grant} />
       ))}
     </div>
   );
 };
-
 export default GrantCardList;
 
 const LoadingAnimation = () => {
